@@ -1,12 +1,12 @@
 :root {
-  --bg: #f4f7ee;
+  --bg: #eef4ff;
   --paper: #ffffff;
-  --text: #1f2a24;
-  --muted: #5a6a61;
-  --line: #d2dccf;
-  --accent: #ef6c2f;
-  --accent-2: #0d9f92;
-  --shadow: 0 16px 50px rgba(24, 32, 28, 0.12);
+  --text: #11203a;
+  --muted: #4b5d7a;
+  --line: #cfdbef;
+  --accent: #1e66ff;
+  --accent-2: #0b4cc9;
+  --shadow: 0 16px 50px rgba(16, 35, 72, 0.12);
 }
 
 * {
@@ -16,7 +16,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(160deg, #eef5e6, #f8f1e9 42%, #edf7f5);
+  background: linear-gradient(160deg, #eef4ff, #f2f7ff 42%, #e8f1ff);
   color: var(--text);
   font-family: "Noto Sans JP", sans-serif;
 }
@@ -34,7 +34,7 @@ body {
   height: 380px;
   top: -120px;
   right: -120px;
-  background: #ff8b5f;
+  background: #5ca0ff;
 }
 
 .bg-shape-b {
@@ -42,7 +42,7 @@ body {
   height: 420px;
   bottom: -180px;
   left: -100px;
-  background: #14bfb1;
+  background: #7fc5ff;
 }
 
 .shell {
@@ -56,7 +56,7 @@ body {
 }
 
 .card {
-  background: color-mix(in srgb, var(--paper) 86%, #f4fce7);
+  background: color-mix(in srgb, var(--paper) 88%, #edf5ff);
   border: 1px solid var(--line);
   border-radius: 20px;
   padding: 20px;
@@ -114,7 +114,7 @@ h1 {
 .btn-primary {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 10px 20px rgba(239, 108, 47, 0.35);
+  box-shadow: 0 10px 20px rgba(30, 102, 255, 0.35);
 }
 
 .btn-ghost {
