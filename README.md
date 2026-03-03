@@ -1,76 +1,33 @@
-# stock-gem-bot
+# Stock Radar Daily
 
-毎日自動で株式銘柄をスクリーニングし、Geminiで要約して通知するMVPです。
+HTML/CSS/JavaScript だけで動く、注目銘柄スクリーナーです。
 
-## 機能
-- 銘柄データ取得: Yahoo Finance (`yfinance`)
-- スクリーニング: 価格・時価総額・出来高倍率でスコアリング
-- 要約: Gemini API (`google-genai`)
-- 通知: Slack Webhook（未設定時は標準出力）
-- 定期実行: `cron` で毎日実行
-- Web UI: Streamlit
+## 構成
+- `index.html`: 画面
+- `styles.css`: デザイン
+- `app.js`: スクリーニングロジック
 
-## セットアップ
-```bash
-cd /Users/tf-co0011/codex_folder/stock-gem-bot
-./scripts/bootstrap.sh
-cp .env.example .env
-```
+## ローカル起動
+`index.html` をブラウザで開くだけで動きます。
 
-`.env` に必要な値を設定してください。
-- `GEMINI_API_KEY`（未設定でも動作はしますが、LLM要約なし）
-- `SLACK_WEBHOOK_URL`（未設定ならコンソール出力）
+## 公開（GitHub Pages）
+このリポジトリには Pages デプロイワークフローを追加済みです。
 
-## 実行
-```bash
-source .venv/bin/activate
-stock-gem-bot --dry-run
-```
+1. GitHub リポジトリ `Settings` → `Pages`
+2. `Build and deployment` の `Source` を `GitHub Actions` に変更
+3. `main` に push すると自動デプロイ
 
-依存未導入でもローカル検証だけ行いたい場合:
-```bash
-PYTHONPATH=src python -m stock_gem_bot.cli --dry-run --mock
-```
+公開URL例:
+- `https://akama-byte.github.io/-demo/`
 
-## Webアプリ起動（ローカル）
-```bash
-source .venv/bin/activate
-streamlit run streamlit_app.py
-```
-
-## Webアプリ公開（Streamlit Community Cloud）
-1. GitHubのこのリポジトリを選択
-2. Main file path を `streamlit_app.py` に設定
-3. Secrets に `GEMINI_API_KEY`（任意）を設定
-4. Deploy
-
-## 毎日自動実行（cron）
-例: 平日 07:30 (JST) 実行
-```bash
-crontab -e
-```
-以下を追記:
-```cron
-30 7 * * 1-5 /Users/tf-co0011/codex_folder/stock-gem-bot/scripts/run_daily.sh >> /Users/tf-co0011/codex_folder/stock-gem-bot/logs/cron.log 2>&1
-```
-
-ログ先を使うなら先に作成:
-```bash
-mkdir -p /Users/tf-co0011/codex_folder/stock-gem-bot/logs
-```
-
-## 毎日自動実行（GitHub Actions）
-`.github/workflows/daily-stock-picks.yml` を追加済みです。  
-GitHub上で以下を設定すると、平日JST 07:30に自動実行されます。
-- `Settings > Secrets and variables > Actions > Secrets`
-  - `GEMINI_API_KEY`（任意）
-  - `SLACK_WEBHOOK_URL`（通知したい場合）
-- `Settings > Secrets and variables > Actions > Variables`（任意）
-  - `TOP_N`, `MIN_PRICE`, `MIN_MARKET_CAP`, `MIN_VOLUME_RATIO`, `APP_TIMEZONE`, `GEMINI_MODEL`
-
-## 銘柄リスト差し替え
-`config/symbols.txt` を編集し、Yahoo Financeのティッカー形式で記載してください。
+## 仕様
+- スクリーニング条件
+  - 最低株価
+  - 最低時価総額
+  - 最低出来高倍率
+  - 上位表示件数
+- 「サンプルデータ再生成」で相場変動を擬似生成
+- 投資助言ではない旨をUIに明記
 
 ## 注意
-- 本アプリの出力は投資助言ではありません。
-- 最終的な投資判断はご自身で行ってください。
+本アプリの情報は教育・参考用途です。投資判断はご自身で行ってください。
