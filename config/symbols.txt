@@ -1,0 +1,12 @@
+# US large-cap sample (Yahoo Finance tickers)
+AAPL
+MSFT
+NVDA
+AMZN
+META
+GOOGL
+TSLA
+AVGO
+AMD
+NFLX
+PLTR
