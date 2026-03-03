@@ -4,13 +4,14 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 from .config import load_config
+from .models import ScoredStock
 from .notifier import SlackNotifier
 from .providers import MockProvider, YahooFinanceProvider
 from .screening import StockScreener
 from .summarizer import GeminiSummarizer
 
 
-def run(*, dry_run: bool = False, use_mock: bool = False) -> str:
+def run_once(*, use_mock: bool = False) -> tuple[str, list[ScoredStock]]:
     cfg = load_config()
     provider = MockProvider() if use_mock else YahooFinanceProvider(cfg.symbols_file)
     screener = StockScreener(
@@ -34,6 +35,12 @@ def run(*, dry_run: bool = False, use_mock: bool = False) -> str:
         "",
         "注意: 本情報は投資助言ではありません。最終判断はご自身でお願いします。",
     ])
+    return body, picks
+
+
+def run(*, dry_run: bool = False, use_mock: bool = False) -> str:
+    cfg = load_config()
+    body, _ = run_once(use_mock=use_mock)
 
     if not dry_run:
         SlackNotifier(cfg.slack_webhook_url).send(body)

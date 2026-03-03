@@ -1,0 +1,34 @@
+name: Daily Stock Picks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 22 * * 0-4' # JST 07:30 on weekdays
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+
+      - name: Run bot
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.0-flash' }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          TOP_N: ${{ vars.TOP_N || '10' }}
+          MIN_PRICE: ${{ vars.MIN_PRICE || '200' }}
+          MIN_MARKET_CAP: ${{ vars.MIN_MARKET_CAP || '20000000000' }}
+          MIN_VOLUME_RATIO: ${{ vars.MIN_VOLUME_RATIO || '1.2' }}
+          APP_TIMEZONE: ${{ vars.APP_TIMEZONE || 'Asia/Tokyo' }}
+        run: stock-gem-bot

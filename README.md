@@ -8,6 +8,7 @@
 - 要約: Gemini API (`google-genai`)
 - 通知: Slack Webhook（未設定時は標準出力）
 - 定期実行: `cron` で毎日実行
+- Web UI: Streamlit
 
 ## セットアップ
 ```bash
@@ -31,6 +32,18 @@ stock-gem-bot --dry-run
 PYTHONPATH=src python -m stock_gem_bot.cli --dry-run --mock
 ```
 
+## Webアプリ起動（ローカル）
+```bash
+source .venv/bin/activate
+streamlit run streamlit_app.py
+```
+
+## Webアプリ公開（Streamlit Community Cloud）
+1. GitHubのこのリポジトリを選択
+2. Main file path を `streamlit_app.py` に設定
+3. Secrets に `GEMINI_API_KEY`（任意）を設定
+4. Deploy
+
 ## 毎日自動実行（cron）
 例: 平日 07:30 (JST) 実行
 ```bash
@@ -45,6 +58,15 @@ crontab -e
 ```bash
 mkdir -p /Users/tf-co0011/codex_folder/stock-gem-bot/logs
 ```
+
+## 毎日自動実行（GitHub Actions）
+`.github/workflows/daily-stock-picks.yml` を追加済みです。  
+GitHub上で以下を設定すると、平日JST 07:30に自動実行されます。
+- `Settings > Secrets and variables > Actions > Secrets`
+  - `GEMINI_API_KEY`（任意）
+  - `SLACK_WEBHOOK_URL`（通知したい場合）
+- `Settings > Secrets and variables > Actions > Variables`（任意）
+  - `TOP_N`, `MIN_PRICE`, `MIN_MARKET_CAP`, `MIN_VOLUME_RATIO`, `APP_TIMEZONE`, `GEMINI_MODEL`
 
 ## 銘柄リスト差し替え
 `config/symbols.txt` を編集し、Yahoo Financeのティッカー形式で記載してください。
